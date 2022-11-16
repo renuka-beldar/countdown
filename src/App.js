@@ -22,6 +22,7 @@ function App() {
   const [addItems, setAddItems] = useState(getLocalStorageItems);
   const [isEditing, setIsEditing] = useState(false);
   const [currentItem, setCurrentItem] = useState({});
+  const [toggleSortByDate, setToggleSortByDate] = useState(false);
 
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
@@ -93,14 +94,11 @@ function App() {
   }, [addItems]);
   return (
     <div className="App">
-      <Button variant="primary" onClick={handleShow} className="m-2">
-        Add
-      </Button>
-
+      <h2 className="mt-4"> Countdown</h2>
       {isEditing ? (
         <Modal show={show1} onHide={handleClose1}>
           <Modal.Header closeButton>
-            <Modal.Title>Edit AddItem</Modal.Title>
+            <Modal.Title>Edit Countdown</Modal.Title>
           </Modal.Header>
           <Form>
             <Modal.Body>
@@ -108,15 +106,16 @@ function App() {
                 style={{ marginBottom: "10px" }}
                 type="date"
                 name="datepic"
-                placeholder="DateRange"
+                placeholder="Date"
                 value={currentItem.date1}
                 minDate={new Date()}
                 onChange={handleEditInputChange1}
               />
-              Note:{" "}
-              <input
-                style={{ borderRadius: "6px" }}
+              <Form.Control
+                style={{ marginBottom: "10px" }}
                 type="text"
+                name="note"
+                placeholder="What you want to create countdown for?"
                 value={currentItem.note}
                 onChange={handleEditInputChange}
               />
@@ -132,22 +131,23 @@ function App() {
       ) : (
         <Modal show={show} onHide={handleClose}>
           <Modal.Header closeButton>
-            <Modal.Title>Select the Date</Modal.Title>
+            <Modal.Title>Add Countdown</Modal.Title>
           </Modal.Header>
           <Modal.Body>
             <Form.Control
               style={{ marginBottom: "10px" }}
               type="date"
               name="datepic"
-              placeholder="DateRange"
+              placeholder="Date"
               value={startDate}
               minDate={new Date()}
               onChange={(e) => setStartDate(e.target.value)}
             />
-            Note:{" "}
-            <input
-              style={{ borderRadius: "6px" }}
+            <Form.Control
+              style={{ marginBottom: "10px" }}
               type="text"
+              name="note"
+              placeholder="What you want to create countdown for?"
               value={note}
               onChange={(e) => setNote(e.target.value)}
             />
@@ -163,6 +163,31 @@ function App() {
       {/* <DatePicker selected={startDate} onChange={(date) => setStartDate(date)} /> */}
       <div className="container mt-5">
         <div className="row">
+          <div className="row">
+            <div className="col-8"></div>
+            <div className="col-2">
+              {addItems?.length ? (
+                <Button
+                  onClick={() => {
+                    addItems.sort(function (a, b) {
+                      return toggleSortByDate
+                        ? new Date(a.date1) - new Date(b.date1)
+                        : new Date(b.date1) - new Date(a.date1);
+                    });
+                    setToggleSortByDate(!toggleSortByDate);
+                    setAddItems([...addItems]);
+                  }}
+                >
+                  Sort by Date
+                </Button>
+              ) : (
+                ""
+              )}
+              <Button variant="primary" onClick={handleShow} className="m-2">
+                Add
+              </Button>
+            </div>
+          </div>
           {addItems?.map((item, index) => {
             return (
               <div className="card-header card bg-light mb-3 card w-25 m-2">
@@ -196,7 +221,7 @@ function App() {
                     type="submit"
                     onClick={() => handelRemoveItems(index)}
                   >
-                    Cancel
+                    Delete
                   </button>
                   <button
                     style={{ marginLeft: "10px" }}
