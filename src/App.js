@@ -3,13 +3,10 @@ import React, { useState, useEffect } from "react";
 import "bootstrap/dist/css/bootstrap.min.css";
 import Button from "react-bootstrap/Button";
 import Modal from "react-bootstrap/Modal";
-// import DatePicker from "react-datepicker";
 import Form from "react-bootstrap/Form";
-// import DateTimePicker from "react-datetime-picker";
 
 const getLocalStorageItems = () => {
   let newItems = localStorage.getItem("newItems");
-  console.log(newItems);
   if (newItems) {
     return JSON.parse(localStorage.getItem("newItems"));
   } else {
@@ -45,7 +42,6 @@ function App() {
       ...addItems,
       { id: addItems.length + 1, date1: startDate, note: note },
     ];
-    console.log(newItems);
     setAddItems(newItems);
     handleClose();
     setStartDate(null);
@@ -57,22 +53,18 @@ function App() {
       ...currentItem,
       note: e.target.value,
     });
-    
   };
   const handleEditInputChange1 = (e) => {
     setCurrentItem({
       ...currentItem,
       date1: e.target.value,
     });
-    
   };
   const handleEditFormSubmit = () => {
-    console.log("retwqey");
     handleUpdateItem(currentItem.id, currentItem);
   };
 
   const handleUpdateItem = (id, updatedItem1) => {
-    console.log("223445");
     const updatedItem = addItems.map((item) => {
       if (item.id === id) {
         return {
@@ -101,7 +93,7 @@ function App() {
   }, [addItems]);
   return (
     <div className="App">
-      <Button variant="primary" onClick={handleShow}>
+      <Button variant="primary" onClick={handleShow} className="m-2">
         Add
       </Button>
 
@@ -173,7 +165,7 @@ function App() {
         <div className="row">
           {addItems?.map((item, index) => {
             return (
-              <div className="card-header card bg-light mb-3 card w-25">
+              <div className="card-header card bg-light mb-3 card w-25 m-2">
                 <div className="card-body">
                   <h5 className="card-title">Remaining Days</h5>
 
