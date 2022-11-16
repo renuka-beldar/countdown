@@ -34,7 +34,8 @@ function App() {
     const today = new Date();
     const perDay = 1000 * 60 * 60 * 24;
     const remainDaysInMilliSeconds = eventDay - today;
-    const remainingDays = Math.ceil(remainDaysInMilliSeconds / perDay);
+    let remainingDays = Math.ceil(remainDaysInMilliSeconds / perDay);
+    remainingDays = remainingDays < 0 ? null : remainingDays;
     return remainingDays;
   };
 
@@ -189,54 +190,58 @@ function App() {
             </div>
           </div>
           {addItems?.map((item, index) => {
-            return (
-              <div className="card-header card bg-light mb-3 card w-25 m-2">
-                <div className="card-body">
-                  <h5 className="card-title">Remaining Days</h5>
+            if (remainigEventDays(item.date1) === null) {
+              return "";
+            } else {
+              return (
+                <div className="card-header card bg-light mb-3 card w-25 m-2">
+                  <div className="card-body">
+                    <h5 className="card-title">Remaining Days</h5>
 
-                  <div key={index}>
-                    <div
-                      className="card-text"
-                      style={{
-                        fontWeight: "600",
-                        fontSize: "60px",
-                        color: "blue",
+                    <div key={index}>
+                      <div
+                        className="card-text"
+                        style={{
+                          fontWeight: "600",
+                          fontSize: "60px",
+                          color: "blue",
+                        }}
+                      >
+                        {remainigEventDays(item?.date1)}
+                      </div>
+                      <div
+                        style={{
+                          fontWeight: "600",
+                          fontSize: "20px",
+                          marginBottom: "15px",
+                        }}
+                      >
+                        {item?.note}
+                      </div>
+                    </div>
+
+                    <button
+                      className="btn btn-primary"
+                      type="submit"
+                      onClick={() => handelRemoveItems(index)}
+                    >
+                      Delete
+                    </button>
+                    <button
+                      style={{ marginLeft: "10px" }}
+                      className="btn btn-primary"
+                      type="submit"
+                      onClick={() => {
+                        handleShow1();
+                        handleEditClick(item);
                       }}
                     >
-                      {remainigEventDays(item?.date1)}
-                    </div>
-                    <div
-                      style={{
-                        fontWeight: "600",
-                        fontSize: "20px",
-                        marginBottom: "15px",
-                      }}
-                    >
-                      {item?.note}
-                    </div>
+                      Edit
+                    </button>
                   </div>
-
-                  <button
-                    className="btn btn-primary"
-                    type="submit"
-                    onClick={() => handelRemoveItems(index)}
-                  >
-                    Delete
-                  </button>
-                  <button
-                    style={{ marginLeft: "10px" }}
-                    className="btn btn-primary"
-                    type="submit"
-                    onClick={() => {
-                      handleShow1();
-                      handleEditClick(item);
-                    }}
-                  >
-                    Edit
-                  </button>
                 </div>
-              </div>
-            );
+              );
+            }
           })}
         </div>
       </div>
