@@ -34,6 +34,7 @@ function App() {
     const perDay = 1000 * 60 * 60 * 24;
     const remainDaysInMilliSeconds = eventDay - today;
     const remainingDays = Math.ceil(remainDaysInMilliSeconds / perDay);
+    remainingDays = remainingDays < 0 ? null : remainingDays;
     return remainingDays;
   };
 
@@ -164,6 +165,10 @@ function App() {
       <div className="container mt-5">
         <div className="row">
           {addItems?.map((item, index) => {
+            if(remainigEventDays(item.date1)===null){
+              return ""
+            }
+            else{
             return (
               <div className="card-header card bg-light mb-3 card w-25 m-2">
                 <div className="card-body">
@@ -211,7 +216,7 @@ function App() {
                   </button>
                 </div>
               </div>
-            );
+            );}
           })}
         </div>
       </div>
